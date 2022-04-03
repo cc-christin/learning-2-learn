@@ -7,17 +7,18 @@
 
 # vet_visits is the df
 # dropping duplicate names
-vet_visits.drop_duplicates(subset="name")
+
+# vet_visits.drop_duplicates(subset="name")
 
 # dropping duplicate pairs 
-unique_dogs = vet_visits.drop_duplicates(subset=["name", "breed"])
-print(unique_dogs)
+# unique_dogs = vet_visits.drop_duplicates(subset=["name", "breed"])
+# print(unique_dogs)
 
 # count dogs of each breed, by subsetting "breed" and using .value_counts method
-unique_dogs["breed"].value_counts(sort=True)
+# unique_dogs["breed"].value_counts(sort=True)
 
 # proportions obtained by using normalize argument 
-unique_dogs["breed"].values_counts(normalize=True)
+# unique_dogs["breed"].values_counts(normalize=True)
 
 # Dropping duplicates
 # Import dependencies 
@@ -61,4 +62,24 @@ print(dept_counts_sorted)
 # Get the proportion of departments of each number and sort
 dept_props_sorted = store_depts["department"].value_counts(sort=True, normalizze=True)
 print(dept_props_sorted)
+
+# Grouped Summary Statistics 
+# df -> dogs
+
+# dogs[dog["color"] == "Black"]["weight_kg"].mean()
+
+# .groupby
+# dogs.groupby("color")["weight_kg"].mean() 
+
+# multiple grouped summaries
+# .agg
+# dogs.groupby("color")["weight_kg"].agg([min, max, sum])
+
+# grouping by multiple variables
+# df -> dogs
+# columns -> "color", "breed"
+# dogs.groupby(["color", "breed"])["weight_kg"].mean()
+
+# goupby multiple columns and aggragate by multiple columns 
+# dogs.goupby(["color", "breed"])[["weight_kg", "height_cm"]].mean()
 
