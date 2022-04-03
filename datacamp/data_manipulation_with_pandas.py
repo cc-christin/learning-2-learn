@@ -83,3 +83,55 @@ print(dept_props_sorted)
 # goupby multiple columns and aggragate by multiple columns 
 # dogs.goupby(["color", "breed"])[["weight_kg", "height_cm"]].mean()
 
+# What percentage of sales occurred at each store type?
+# df -> sales
+# import dependencies
+import pandas as pd
+
+# calculate total weekly sales
+sales_all = sales["weekly_sales"].sum()
+
+# subset for type A stores, calculate total weekly sales
+sales_A = sales[sales["type"] == "A"]["weekly_sales"].sum()
+
+#subset for type B stores, calculate total weekly sales
+sales_B = sales[sales["type"] == "B"]["weekly_sales"].sum()
+
+# subset for type C stores, calculate total weekly sales
+sales_c = sales[sales["type"] == "C"]["weekly_sales"].sum()
+
+# get proportion for each type
+sales_propn_by_type = [sales_A, sales_B, sales_C] / (sales_A + sales_B, sales_C)
+print(sales_propn_by_type)
+
+# Calculations with .groupby()
+# df -> sales
+# import pandas as pd
+
+# Group by type; calulate total weekly sales
+sales_by_type = sales.groupby("type")["weekly_sales"].sum()
+
+# Get proportion for each type
+sales_propn_by_type = sales_by_type /sum(sales.weekly_sales)
+print(sales_propn_by_type)
+
+# group by type and is_holiday; calculate total weekly sales
+sales_by_type_is_holiday = sales.groupby(["type", "is_holiday"])["weekly_sales"].sum()
+print(sales_by_type_is_holiday)
+
+# Multiple grouped summaries
+# Import dependencies
+import numpy as np
+
+# For each store type, aggregate weekly_sales: get min, max, mean, and median
+sales_stats = sales.groupby("type")["weekly_sales"].agg([np.min, np.max, np.mean, np.median])
+
+# Print sales_stats
+print(sales_stats)
+
+# For each store type, aggregate unemployment and fuel_price_usd_per_l: get min, max, mean, and median
+unemp_fuel_stats = sales.groupby("type")[["unemployment", "fuel_price_usd_per_l"]].agg([np.min, np.max, np.mean, np.median])
+
+# Print unemp_fuel_stats
+print(unemp_fuel_stats)
+
