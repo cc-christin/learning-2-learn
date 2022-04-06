@@ -192,3 +192,117 @@ print(sales.pivot_table(values="weekly_sales", index="department", columns="type
 
 # sum all rows and cols
 print(sales.pivot_table(values="weekly_sales", index="department", columns="type", fill_value=0, margins=True))
+
+# Slicing and Indexing DataFrames
+# Explicity Indexes
+# df -> dogs
+
+# index object of column names
+dogs.columns
+
+# index object of row numbers
+dogs.index
+
+# setting column as index
+dogs_ind = dogs.set_index("name")
+
+# undo; reset index 
+dogs_ind.reset_index()
+
+# discard/drop index
+dogs_ind.reset_index(drop=True)
+
+# Indexes makes subsetting cleaner
+# loc focuses on index values
+
+# Subsetting Example w/out indexing
+# dogs[dogs["name"].isin(["Bella", "Stella"])
+
+# Subsetting Example when name is indexed
+dogs_ind.loc[["Bella", "Stella"]]
+
+# Index values do not have to be unique
+# Subsetting on duplicate index values using loc
+dogs_ind2.loc["Labrador"]
+# Returns all values for applicable data
+
+# Multiple/Hierarchical Indexes
+dogs_ind3 = dogs.set_index(["breed", "color"])
+print(dogs_ind3)
+
+# Subset outer level of index with a list 
+dogs_ind3.loc[["Labrador", "Chihuahua"]]
+
+# Subset inner levels with a list of tuples
+dogs_ind3.loc[[("Labrador", "Brown"), ("Chihuahua", "Tan")]]
+
+# recap
+# sorting all index values; outer to inner in ascending by .sort_index()
+dogs_ind3.sort_index()
+
+# control sort_index()
+dogs_ind3.sort_index(level=["color", "breed"], ascending = [True, False])
+
+# Setting and removing indexes
+# Import Dependencies
+# import Pandas as pd
+# df -> temperatures
+
+# View temperatures
+print(temperatures)
+
+# Index temperatures by city
+temperatures_ind = temperatures.set_index("city")
+
+# View temperatures_ind
+print(temperatures_ind)
+
+# reset index, keeping contents
+print(temperatures_ind.reset_index())
+
+# Reset index, dropping contents
+print(temperatures_ind.reset_index(drop=True))
+
+# Subsetting with .loc[]
+# import pandas as pd
+# df -> temperatures
+# df2 -> temperatures_ind = temperatures.set_index("city")
+
+# list of cities to subset on 
+cities = ["Moscow", "Saint Petersburg"]
+
+# Subset temperatures using square brackets aka w/out indexing
+print(temperatures[temperatures["city"].isin(cities)])
+
+# subset temperatures_ind using .loc[]
+print(temperatures_ind.loc[cities])
+
+# indexing allows for more concise code when subsetting rows via .loc[]
+
+# Setting multi-level/hierarchical indexes
+# import pandas as pd
+# df -> temperatures
+
+# Index temperatures by country & city
+temperatures_ind = temperatures.set_index(["country", "city"])
+
+# List of tuples: Brazil, Rio De Janeiro & Pakistan, Lahore
+rows_to_keep = [[("Brazil", "Rio De Janeiro"), ("Pakistan", "Lahore")]]
+
+# Subset for rows_to_keep
+print(temperatures_ind.loc[rows_to_keep])
+
+# Sorting by index values
+# .sort_values()
+# .sort_index()
+
+# import pandas as pd
+# df -> temperatures_ind
+# Sort temperatures_ind by index values
+print(temperatures_ind.sort_index())
+
+# Sort temperatures_ind by index values at the city level
+print(temperatures_ind.sort_index(level = "city"))
+
+# Sort temperatures_ind by country then descending city
+print(temperatures_ind.sort_index(level = ["country", "city"], ascending = [True, False]))
