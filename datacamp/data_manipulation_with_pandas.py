@@ -306,3 +306,113 @@ print(temperatures_ind.sort_index(level = "city"))
 
 # Sort temperatures_ind by country then descending city
 print(temperatures_ind.sort_index(level = ["country", "city"], ascending = [True, False]))
+
+# Slicing and subsetting with .loc and .iloc
+    # Slicing is a technique for selecting consecutive elements from objects.
+
+# Slicing lists
+ breeds = ["Labrador", "Poodle", "Chow Chow", "Schnauzer", "Labrador", "Chihuahua", "St. Bernard"]
+
+ # slicing the list selecting ["Chow Chow", "Schnauzer", "Labrador"], index[2,3,4]
+ breeds[2:5]
+
+ # slicing the list for the first 3 elements
+ breeds[:3]
+
+ # slicing the list for all elements
+ breeds[:] 
+
+ # Remeber to sort index before slicing 
+ dogs_srt = dogs.set_index(["breed", "color"]).sort_index()
+ print(dog_srt)
+
+ # Slice rows at outer level of an index
+ dogs_srt.loc["Chow Chow": "Poodle"]
+# "Poodle" is the final value and is included when slicing row at the outer level
+
+# technique does not apply to slicing inner index levels 
+# bad technique
+
+dogs_srt.loc["Tan" : "Gray"]
+
+# correct method is to pass inner positions as tuples
+dogs_srt.loc[("Labrador", "Brown"):("Schnauzer", "Gray")]
+
+# slicing columns
+dogs_srt.loc[:, "name":"height_cm"]
+
+# Slicing rows and columns, slice twice
+dogs_srt.loc[("Labrador", "Brown"):("Schnauzer", "Gray"), "name": "height_cm"]
+
+# subset DataFrames by a range of dates
+dogs = dogs.set_index("date_of_birth").sort_index()
+
+# slicing by dates
+# Get dogs with date_of_birth between 2014-08-25 and 2016-09-16
+dogs.loc["2014-08-25":"2016-09-16"]
+
+# slicing by partial dates
+dogs.loc["2014":"2016"]
+
+# subsetting by row/column number, .iloc
+print(dogs.iloc[2:5, 1:4])
+
+# Slicing index values
+# import pandas as pd
+# df -> temperatures_ind|country, city, date, avg_temp_c
+
+# Sort the index of temperatures_ind
+temperatures_srt = temperatures_ind.sort_index()
+# print(temperatures_srt)
+
+# Subset rows from Pakistan to Russia
+print(temperatures_srt.loc["Pakistan":"Russia"])
+
+# Try to subset rows from Lahore to Moscow
+print(temperatures_srt.loc["Lahore":"Moscow"])
+
+# Subset rows from Pakistan, Lahore to Russia, Moscow
+# tuple for slicing inner index
+print(temperatures_srt.loc[("Pakistan","Lahore"):("Russia","Moscow")])
+
+# Slicing in both directions 
+# Subset rows from India, Hyderabad to Iraq, Baghdad
+print(temperatures_srt.loc[("India","Hyderabad"):("Iraq","Baghdad")])
+
+# Subset columns from date to avg_temp_c
+print(temperatures_srt.loc[:, "date":"avg_temp_c"])
+
+# Subset in both directions at once; bidirectional slicing
+print(temperatures_srt.loc[("India","Hyderabad"):("Iraq","Baghdad"),"date":"avg_temp_c"])
+
+# Slicing time series
+# datetime in ISO 8601 format|"yyyy-mm-dd" for year-month-day
+# import pandas as pd
+# df -> temperatures| no index
+# Use Boolean conditions to subset temperatures for rows in 2010 and 2011
+temperatures_bool = temperatures[(temperatures["date"] >= "2010-01-01") & (temperatures["date"] <= "2011-12-31")]
+print(temperatures_bool)
+
+# Set date as the index and sort the index
+temperatures_ind = temperatures.set_index("date").sort_index()
+
+# Use .loc[] to subset temperatures_ind for rows in 2010 and 2011|partial dates
+print(temperatures_ind.loc["2010":"2011"])
+
+# Use .loc[] to subset temperatures_ind for rows from Aug 2010 to Feb 2011
+print(temperatures_ind.loc["2010-08":"2011-02"])
+
+# Subsetting by row/column number
+# import pandas as pd 
+# df -> temperatures| no index 
+# Get 23rd row, 2nd column (index 22, 1)
+print(temperatures.iloc[22,2])
+
+# Use slicing to get the first 5 rows
+print(temperatures.iloc[0:5, :])
+
+# Use slicing to get columns 3 to 4
+print(temperatures.iloc[:, 2:4])
+
+# Use slicing in both directions at once
+print(temperatures.iloc[0:5, 2:4])
