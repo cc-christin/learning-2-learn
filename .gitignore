@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ignore 
+ecg.ipynb_checkpoints
+*/ecg.ipynb_checkpoints/*
